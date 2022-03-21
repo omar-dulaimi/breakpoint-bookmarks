@@ -11,7 +11,7 @@ export const loadBookmarks =
     const flowsPaths = await readdir(
       saveLocation
         ? `${saveLocation}`
-        : path.join(__dirname, "..", ".vscode", "breakpoints")
+        : path.join(__dirname, "..", "..", ".vscode", "breakpoints")
     );
     const foundFilePath = flowsPaths.find((flowPath) => flowPath === item.id);
     if (foundFilePath) {
@@ -26,6 +26,7 @@ export const loadBookmarks =
         ? `${saveLocation}/${foundFilePath}`
         : path.join(
             __dirname,
+            "..",
             "..",
             ".vscode",
             "breakpoints",

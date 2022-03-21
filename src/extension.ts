@@ -11,21 +11,19 @@ export async function activate(context: vscode.ExtensionContext) {
   vscode.window.registerTreeDataProvider("savedBookmarks", provider);
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "breakpoint-bookmarks.saveCurrentBreakpoints",
-      () => saveCurrentBreakpoints(provider)
+    vscode.commands.registerCommand("extension.saveCurrentBreakpoints", () =>
+      saveCurrentBreakpoints(provider)()
     )
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "breakpoint-bookmarks.loadBookmarks",
-      (item) => loadBookmarks(provider)(item)
+    vscode.commands.registerCommand("extension.loadBookmarks", (item) =>
+      loadBookmarks(provider)(item)
     )
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("breakpoint-bookmarks.refresh", () =>
+    vscode.commands.registerCommand("extension.refresh", () =>
       refresh(provider)
     )
   );

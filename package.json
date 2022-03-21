@@ -2,9 +2,10 @@
   "name": "breakpoint-bookmarks",
   "displayName": "Breakpoint Bookmarks",
   "description": "Bookmark all your different breakpoints into separate files, and activate them as needed",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": "https://github.com/omar-dulaimi/breakpoint-bookmarks",
   "author": "Omar Dulaimi",
+  "publisher": "OmarDulaimi",
   "keywords": [
     "vscode",
     "breakpoint",
@@ -19,18 +20,18 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:breakpoint-bookmarks.saveCurrentBreakpoints",
+    "onCommand:extension.saveCurrentBreakpoints",
     "onView:savedBookmarks"
   ],
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "breakpoint-bookmarks.saveCurrentBreakpoints",
+        "command": "extension.saveCurrentBreakpoints",
         "title": "Breakpoint Bookmark: Save Current Breakpoints"
       },
       {
-        "command": "breakpoint-bookmarks.loadBookmarks",
+        "command": "extension.loadBookmarks",
         "title": "Load breakpoint flow",
         "icon": {
           "light": "resources/light/load.svg",
@@ -38,7 +39,7 @@
         }
       },
       {
-        "command": "breakpoint-bookmarks.refresh",
+        "command": "extension.refresh",
         "title": "Refresh",
         "icon": {
           "light": "resources/light/refresh.svg",
@@ -49,13 +50,13 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "breakpoint-bookmarks.loadBookmarks",
+          "command": "extension.loadBookmarks",
           "group": "inline"
         }
       ],
       "view/title": [
         {
-          "command": "breakpoint-bookmarks.refresh",
+          "command": "extension.refresh",
           "when": "view == savedBookmarks",
           "group": "navigation"
         }
@@ -98,13 +99,10 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
@@ -119,9 +117,6 @@
     "glob": "^7.2.0",
     "mocha": "^9.2.1",
     "typescript": "^4.5.5",
-    "ts-loader": "^9.2.6",
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2",
     "@vscode/test-electron": "^2.1.2"
   }
 }

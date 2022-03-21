@@ -8,8 +8,8 @@ class BookmarkFlow extends vscode.TreeItem {
     super(label);
     this.contextValue = "flow-item";
     this.iconPath = {
-      light: path.join(__dirname, "..", "resources/light/flow.svg"),
-      dark: path.join(__dirname, "..", "resources/dark/flow.svg"),
+      light: path.join(__dirname, "..", "..", "resources/light/flow.svg"),
+      dark: path.join(__dirname, "..", "..", "resources/dark/flow.svg"),
     };
   }
 }
@@ -33,7 +33,7 @@ export class BreakpointBookmarksProvider {
     const flowsPaths = await readdir(
       saveLocation
         ? `${saveLocation}`
-        : path.join(__dirname, "..", ".vscode", "breakpoints")
+        : path.join(__dirname, "..", "..", ".vscode", "breakpoints")
     );
     const treeData = flowsPaths.map((flowPath, index) => ({
       id: flowPath,
@@ -44,9 +44,9 @@ export class BreakpointBookmarksProvider {
 
   async assureSaveDirectoryExist(saveLocation: string) {
     if (!saveLocation) {
-      const paths = await readdir(path.join(__dirname, "..", ".vscode"));
+      const paths = await readdir(path.join(__dirname, "..", "..", ".vscode"));
       if (!paths.find((p) => p === "breakpoints")) {
-        await mkdir(path.join(__dirname, "..", ".vscode", "breakpoints"));
+        await mkdir(path.join(__dirname, "..", "..", ".vscode", "breakpoints"));
       }
     } else {
       if (!existsSync(saveLocation)) {
