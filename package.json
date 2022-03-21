@@ -3,6 +3,15 @@
   "displayName": "Breakpoint Bookmarks",
   "description": "Bookmark all your different breakpoints into separate files, and activate them as needed",
   "version": "0.0.1",
+  "repository": "https://github.com/omar-dulaimi/breakpoint-bookmarks",
+  "author": "Omar Dulaimi",
+  "keywords": [
+    "vscode",
+    "breakpoint",
+    "bookmark",
+    "extension"
+  ],
+  "license": "MIT",
   "engines": {
     "vscode": "^1.65.0"
   },
