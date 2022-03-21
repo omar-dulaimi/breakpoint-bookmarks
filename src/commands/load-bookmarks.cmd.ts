@@ -5,13 +5,15 @@ import { BreakpointBookmarksProvider } from "../providers/breakpoint-bookmarks.p
 
 export const loadBookmarks =
   (provider: BreakpointBookmarksProvider) => async (item: any) => {
+    const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri
+      ?.fsPath as string;
     const config = vscode.workspace.getConfiguration("breakpointBookmark");
     const saveLocation = config.get("saveLocation") as string;
-    await provider.assureSaveDirectoryExist(saveLocation);
+    await provider.assureSaveDirectoryExist(saveLocation, workspacePath);
     const flowsPaths = await readdir(
       saveLocation
         ? `${saveLocation}`
-        : path.join(__dirname, "..", "..", ".vscode", "breakpoints")
+        : path.join(workspacePath, ".vscode", "breakpoints")
     );
     const foundFilePath = flowsPaths.find((flowPath) => flowPath === item.id);
     if (foundFilePath) {
@@ -25,9 +27,7 @@ export const loadBookmarks =
       const filePath = saveLocation
         ? `${saveLocation}/${foundFilePath}`
         : path.join(
-            __dirname,
-            "..",
-            "..",
+            workspacePath,
             ".vscode",
             "breakpoints",
             `${foundFilePath}`

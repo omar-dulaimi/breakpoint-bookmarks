@@ -5,9 +5,11 @@ import { BreakpointBookmarksProvider } from "../providers/breakpoint-bookmarks.p
 
 export const saveCurrentBreakpoints =
   (provider: BreakpointBookmarksProvider) => async () => {
+    const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri
+      ?.fsPath as string;
     const config = vscode.workspace.getConfiguration("breakpointBookmark");
     const saveLocation = config.get("saveLocation") as string;
-    await provider.assureSaveDirectoryExist(saveLocation);
+    await provider.assureSaveDirectoryExist(saveLocation, workspacePath);
     const fileName = await vscode.window.showInputBox({
       title: "Enter file name without extension",
       placeHolder: "test express bug",
@@ -25,14 +27,7 @@ export const saveCurrentBreakpoints =
 
     const filePath = saveLocation
       ? `${saveLocation}/${fileName}.json`
-      : path.join(
-          __dirname,
-          "..",
-          "..",
-          ".vscode",
-          "breakpoints",
-          `${fileName}.json`
-        );
+      : path.join(workspacePath, ".vscode", "breakpoints", `${fileName}.json`);
 
     await writeFile(filePath, JSON.stringify(currentBreakpoints), {
       encoding: "utf-8",

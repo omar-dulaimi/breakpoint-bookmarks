@@ -8,8 +8,24 @@ class BookmarkFlow extends vscode.TreeItem {
     super(label);
     this.contextValue = "flow-item";
     this.iconPath = {
-      light: path.join(__dirname, "..", "..", "resources/light/flow.svg"),
-      dark: path.join(__dirname, "..", "..", "resources/dark/flow.svg"),
+      light: path.join(
+        __filename,
+        "..",
+        "..",
+        "..",
+        "resources",
+        "light",
+        "flow.svg"
+      ),
+      dark: path.join(
+        __filename,
+        "..",
+        "..",
+        "..",
+        "resources",
+        "dark",
+        "flow.svg"
+      ),
     };
   }
 }
@@ -27,13 +43,15 @@ export class BreakpointBookmarksProvider {
   constructor() {}
 
   async prepareData() {
+    const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri
+      ?.fsPath as string;
     const config = vscode.workspace.getConfiguration("breakpointBookmark");
     const saveLocation = config.get("saveLocation") as string;
-    await this.assureSaveDirectoryExist(saveLocation);
+    await this.assureSaveDirectoryExist(saveLocation, workspacePath);
     const flowsPaths = await readdir(
       saveLocation
         ? `${saveLocation}`
-        : path.join(__dirname, "..", "..", ".vscode", "breakpoints")
+        : path.join(workspacePath, ".vscode", "breakpoints")
     );
     const treeData = flowsPaths.map((flowPath, index) => ({
       id: flowPath,
@@ -42,11 +60,15 @@ export class BreakpointBookmarksProvider {
     this.data = treeData;
   }
 
-  async assureSaveDirectoryExist(saveLocation: string) {
+  async assureSaveDirectoryExist(saveLocation: string, workspacePath: string) {
     if (!saveLocation) {
-      const paths = await readdir(path.join(__dirname, "..", "..", ".vscode"));
-      if (!paths.find((p) => p === "breakpoints")) {
-        await mkdir(path.join(__dirname, "..", "..", ".vscode", "breakpoints"));
+      const paths = await readdir(workspacePath);
+      if (!paths.find((p) => p === ".vscode")) {
+        await mkdir(path.join(workspacePath, ".vscode"));
+      }
+      const workspacePaths = await readdir(path.join(workspacePath, ".vscode"));
+      if (!workspacePaths.find((p) => p === "breakpoints")) {
+        await mkdir(path.join(workspacePath, ".vscode", "breakpoints"));
       }
     } else {
       if (!existsSync(saveLocation)) {
