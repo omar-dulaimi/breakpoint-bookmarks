@@ -2,7 +2,7 @@
   "name": "breakpoint-bookmarks",
   "displayName": "Breakpoint Bookmarks",
   "description": "Bookmark all your different breakpoints into separate files, and activate them as needed",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": "https://github.com/omar-dulaimi/breakpoint-bookmarks",
   "author": "Omar Dulaimi",
   "publisher": "OmarDulaimi",
