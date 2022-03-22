@@ -55,7 +55,7 @@ export class BreakpointBookmarksProvider {
     );
     const treeData = flowsPaths.map((flowPath, index) => ({
       id: flowPath,
-      label: `flow #${index + 1}: ${flowPath.split(".")[0].slice(0, 25)}`,
+      label: `flow: ${flowPath.split(".")[0].slice(0, 25)}`,
     }));
     this.data = treeData;
   }
