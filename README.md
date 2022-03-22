@@ -1,3 +1,7 @@
+[![vscode version](https://vsmarketplacebadge.apphb.com/version/OmarDulaimi.breakpoint-bookmarks.svg)](https://vsmarketplacebadge.apphb.com/version/OmarDulaimi.breakpoint-bookmarks.svg)
+[![vscode downloads](https://vsmarketplacebadge.apphb.com/downloads/OmarDulaimi.breakpoint-bookmarks.svg)](https://vsmarketplacebadge.apphb.com/downloads/OmarDulaimi.breakpoint-bookmarks.svg)
+[![license](https://img.shields.io/github/license/omar-dulaimi/breakpoint-bookmarks)](https://img.shields.io/github/license/omar-dulaimi/breakpoint-bookmarks)
+[![vscode ratings](https://vsmarketplacebadge.apphb.com/rating/OmarDulaimi.breakpoint-bookmarks.svg)](https://vsmarketplacebadge.apphb.com/rating/OmarDulaimi.breakpoint-bookmarks.svg)
 # Breakpoint Bookmarks
 
 The Breakpoint Bookmarks extension will help you enhance your debugging workflows, by creating and maintaining separate breakpoints files, and load them as necessary, in their original locations. It supports all language supported by vsCode.
