@@ -6,7 +6,7 @@
 
 The Breakpoint Bookmarks extension will help you enhance your debugging workflows, by creating and maintaining separate breakpoints files, and load them as necessary, in their original locations. It supports all language supported by vsCode.
 
-# Installation
+## Installation
 
 Simply run this `ext install OmarDulaimi.breakpoint-bookmarks` in the command palette or search for `Breakpoint Bookmarks` in extensions menu.
 ## Features
