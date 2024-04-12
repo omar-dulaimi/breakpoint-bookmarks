@@ -1,7 +1,7 @@
-import * as vscode from "vscode";
-import * as path from "path";
-import { readdir, mkdir } from "fs/promises";
 import { existsSync } from "fs";
+import { mkdir, readdir } from "fs/promises";
+import * as path from "path";
+import * as vscode from "vscode";
 
 class BookmarkFlow extends vscode.TreeItem {
   constructor(public readonly label: string) {
@@ -45,6 +45,12 @@ export class BreakpointBookmarksProvider {
   async prepareData() {
     const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri
       ?.fsPath as string;
+
+    if (!workspacePath) {
+      vscode.window.showInformationMessage("No workspace opened!");
+      return;
+    }
+
     const config = vscode.workspace.getConfiguration("breakpointBookmark");
     const saveLocation = config.get("saveLocation") as string;
     await this.assureSaveDirectoryExist(saveLocation, workspacePath);
