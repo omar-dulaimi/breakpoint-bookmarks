@@ -53,7 +53,13 @@ export class BreakpointBookmarksProvider {
 
     const config = vscode.workspace.getConfiguration("breakpointBookmark");
     const saveLocation = config.get("saveLocation") as string;
-    await this.assureSaveDirectoryExist(saveLocation, workspacePath);
+
+    const isDirExist = await this.assureSaveDirectoryExist(
+      saveLocation,
+      workspacePath
+    );
+    if (!isDirExist) return;
+
     const flowsPaths = await readdir(
       saveLocation
         ? `${saveLocation}`
@@ -76,11 +82,15 @@ export class BreakpointBookmarksProvider {
       if (!workspacePaths.find((p) => p === "breakpoints")) {
         await mkdir(path.join(workspacePath, ".vscode", "breakpoints"));
       }
+      return true;
     } else {
       if (!existsSync(saveLocation)) {
-        throw new Error("Specified save location does not exist");
+        vscode.window.showInformationMessage(
+          "Specified save location does not exist. Please make sure it exists"
+        );
       }
     }
+    return false;
   }
 
   async refresh() {
