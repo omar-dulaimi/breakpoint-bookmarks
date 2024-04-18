@@ -22,10 +22,11 @@ export const saveCurrentBreakpoints =
     );
     if (!isDirExist) return;
 
-    const fileName = await vscode.window.showInputBox({
-      title: "Enter file name without extension",
-      placeHolder: "test express bug",
-    });
+    const fileName =
+      (await vscode.window.showInputBox({
+        title: "Enter file name without extension",
+        placeHolder: "test express bug",
+      })) ?? "";
 
     const currentBreakpoints = (
       vscode.debug.breakpoints as vscode.SourceBreakpoint[]
@@ -52,7 +53,7 @@ export const saveCurrentBreakpoints =
     });
 
     const filePath = saveLocation
-      ? `${saveLocation}/${fileName}.json`
+      ? `${path.join(workspacePath, saveLocation, fileName)}.json`
       : path.join(workspacePath, ".vscode", "breakpoints", `${fileName}.json`);
 
     await writeFile(filePath, JSON.stringify(currentBreakpoints), {

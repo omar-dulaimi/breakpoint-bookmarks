@@ -62,7 +62,7 @@ export class BreakpointBookmarksProvider {
 
     const flowsPaths = await readdir(
       saveLocation
-        ? `${saveLocation}`
+        ? path.resolve(workspacePath, saveLocation)
         : path.join(workspacePath, ".vscode", "breakpoints")
     );
     const treeData = flowsPaths.map((flowPath, index) => ({
@@ -84,13 +84,16 @@ export class BreakpointBookmarksProvider {
       }
       return true;
     } else {
-      if (!existsSync(saveLocation)) {
+      const fullPath = path.resolve(workspacePath, saveLocation);
+      if (!existsSync(fullPath)) {
         vscode.window.showInformationMessage(
           "Specified save location does not exist. Please make sure it exists"
         );
+        return false;
+      } else {
+        return true;
       }
     }
-    return false;
   }
 
   async refresh() {
