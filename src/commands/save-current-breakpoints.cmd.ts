@@ -14,7 +14,14 @@ export const saveCurrentBreakpoints =
     }
     const config = vscode.workspace.getConfiguration("breakpointBookmark");
     const saveLocation = config.get("saveLocation") as string;
-    await provider.assureSaveDirectoryExist(saveLocation, workspacePath);
+    const useRelativePaths = config.get("useRelativePaths") as boolean;
+
+    const isDirExist = await provider.assureSaveDirectoryExist(
+      saveLocation,
+      workspacePath
+    );
+    if (!isDirExist) return;
+
     const fileName = await vscode.window.showInputBox({
       title: "Enter file name without extension",
       placeHolder: "test express bug",
@@ -23,14 +30,19 @@ export const saveCurrentBreakpoints =
     const currentBreakpoints = (
       vscode.debug.breakpoints as vscode.SourceBreakpoint[]
     ).map((bp: vscode.SourceBreakpoint) => {
-      const location: string = bp.location.uri.path;
+      let locationPath: string = bp.location.uri.path;
+
+      if (useRelativePaths) {
+        locationPath = path.relative(workspacePath, locationPath);
+      }
+
       const range: vscode.Range = bp.location.range.with({
         start: bp.location.range.start.translate(1),
         end: bp.location.range.end.translate(1),
       });
 
       return {
-        location,
+        location: locationPath,
         range,
         enabled: bp.enabled,
         condition: bp.condition,
