@@ -46,12 +46,22 @@
           "light": "resources/light/refresh.svg",
           "dark": "resources/dark/refresh.svg"
         }
+      },
+      {
+        "command": "extension.deleteFlow",
+        "title": "Delete Bookmarks Flow",
+        "shortTitle": "Delete Flow",
+        "icon": "$(trash)"
       }
     ],
     "menus": {
       "view/item/context": [
         {
           "command": "extension.loadBookmarks",
+          "group": "inline"
+        },
+        {
+          "command": "extension.deleteFlow",
           "group": "inline"
         }
       ],

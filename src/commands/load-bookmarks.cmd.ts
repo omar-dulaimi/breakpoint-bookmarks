@@ -34,7 +34,7 @@ export const loadBookmarks =
 
     const flowsPaths = await readdir(
       saveLocation
-        ? `${saveLocation}`
+        ? path.join(workspacePath, saveLocation)
         : path.join(workspacePath, ".vscode", "breakpoints")
     );
 
@@ -48,7 +48,7 @@ export const loadBookmarks =
       }
 
       const filePath = saveLocation
-        ? `${saveLocation}/${foundFilePath}`
+        ? path.join(workspacePath, saveLocation, foundFilePath)
         : path.join(
             workspacePath,
             ".vscode",

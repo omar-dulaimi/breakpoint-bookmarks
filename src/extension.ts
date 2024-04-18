@@ -1,8 +1,9 @@
 import * as vscode from "vscode";
-import { BreakpointBookmarksProvider } from "./providers/breakpoint-bookmarks.provider";
-import { saveCurrentBreakpoints } from "./commands/save-current-breakpoints.cmd";
+import { deleteBookmarksFlow } from "./commands/delete-bookmarks-flow.cmd";
 import { loadBookmarks } from "./commands/load-bookmarks.cmd";
 import { refresh } from "./commands/refresh.cmd";
+import { saveCurrentBreakpoints } from "./commands/save-current-breakpoints.cmd";
+import { BreakpointBookmarksProvider } from "./providers/breakpoint-bookmarks.provider";
 
 export async function activate(context: vscode.ExtensionContext) {
   vscode.debug.breakpoints;
@@ -19,6 +20,12 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("extension.loadBookmarks", (item) =>
       loadBookmarks(provider)(item)
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("extension.deleteFlow", (item) =>
+      deleteBookmarksFlow(provider)(item)
     )
   );
 
