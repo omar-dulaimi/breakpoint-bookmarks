@@ -33,5 +33,6 @@ Once you have at least one breakpoints flow saved, you can load it by opening th
 
 This extension contributes the following settings:
 
-- `breakpointBookmark.clearPreviousBreakpoints`: Clears previous active breakpoints when loading a new file
-- `breakpointBookmark.saveLocation`: Specifies the folder path where the breakpoint files will be stored in
+- `breakpointBookmark.useRelativePaths`: Uses relative paths to save/load breakpoints. Set it to false if you want absolute paths.
+- `breakpointBookmark.clearPreviousBreakpoints`: Clears previous active breakpoints when loading a new file.
+- `breakpointBookmark.saveLocation`: Specifies the folder path where the breakpoint files will be stored in.

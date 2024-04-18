@@ -24,12 +24,20 @@ export const loadBookmarks =
 
     const config = vscode.workspace.getConfiguration("breakpointBookmark");
     const saveLocation = config.get("saveLocation") as string;
-    await provider.assureSaveDirectoryExist(saveLocation, workspacePath);
+    const useRelativePaths = config.get("useRelativePaths") as boolean;
+
+    const isDirExist = await provider.assureSaveDirectoryExist(
+      saveLocation,
+      workspacePath
+    );
+    if (!isDirExist) return;
+
     const flowsPaths = await readdir(
       saveLocation
         ? `${saveLocation}`
         : path.join(workspacePath, ".vscode", "breakpoints")
     );
+
     const foundFilePath = flowsPaths.find((flowPath) => flowPath === item.id);
     if (foundFilePath) {
       const clearPreviousBreakpoints = config.get("clearPreviousBreakpoints");
@@ -62,8 +70,14 @@ export const loadBookmarks =
             new vscode.Position(range[1].line, range[1].character)
           );
 
+          let locationPath = bp.location;
+          if (useRelativePaths) {
+            // converts stored relative path back to absolute
+            locationPath = path.resolve(workspacePath, bp.location);
+          }
+
           return new vscode.SourceBreakpoint(
-            new vscode.Location(vscode.Uri.file(bp.location), vscodeRange),
+            new vscode.Location(vscode.Uri.file(locationPath), vscodeRange),
             bp.enabled,
             bp.condition,
             bp.hitCondition,
