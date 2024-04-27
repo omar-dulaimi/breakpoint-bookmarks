@@ -11,7 +11,17 @@ The Breakpoint Bookmarks extension will help you enhance your debugging workflow
 ## Installation
 
 Simply run this `ext install OmarDulaimi.breakpoint-bookmarks` in the command palette or search for `Breakpoint Bookmarks` in extensions menu.
+
 ## Features
+
+##### 🔍 Import Breakpoints from JSON: Load breakpoints from JSON files.
+##### 💾 Export Breakpoints to JSON: Save breakpoints to JSON files.
+##### 🗑️ Delete Breakpoints: Remove breakpoints from the current workspace.
+##### 🌐 Cross-Language Support: Compatible with all VSCode-supported languages.
+##### 🛠️ Basic Breakpoint Management: Simple list view of breakpoints.
+##### ⚙️ Configuration: Minimal settings for import/export and others.
+
+## Demos
 
 ### Save Current Breakpoints
 
