@@ -29,7 +29,8 @@
     "commands": [
       {
         "command": "extension.saveCurrentBreakpoints",
-        "title": "Breakpoint Bookmark: Save Current Breakpoints"
+        "title": "Breakpoint Bookmark: Save Current Breakpoints",
+        "icon": "$(save)"
       },
       {
         "command": "extension.loadBookmarks",
@@ -58,14 +59,21 @@
       "view/item/context": [
         {
           "command": "extension.loadBookmarks",
+          "when": "view == savedBookmarks",
           "group": "inline"
         },
         {
           "command": "extension.deleteFlow",
+          "when": "view == savedBookmarks",
           "group": "inline"
         }
       ],
       "view/title": [
+        {
+          "command": "extension.saveCurrentBreakpoints",
+          "when": "view == savedBookmarks",
+          "group": "navigation"
+        },
         {
           "command": "extension.refresh",
           "when": "view == savedBookmarks",
