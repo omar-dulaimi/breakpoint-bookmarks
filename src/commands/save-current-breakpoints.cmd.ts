@@ -20,7 +20,7 @@ export const saveCurrentBreakpoints =
       saveLocation,
       workspacePath
     );
-    if (!isDirExist) return;
+    if (!isDirExist) { return; }
 
     const fileName =
       (await vscode.window.showInputBox({

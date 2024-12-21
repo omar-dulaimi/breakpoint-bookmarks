@@ -41,6 +41,12 @@
         }
       },
       {
+        "command": "extension.editFlow",
+        "title": "Edit Bookmarks Flow",
+        "shortTitle": "Edit Flow",
+        "icon": "$(edit)"
+      },
+      {
         "command": "extension.refresh",
         "title": "Refresh",
         "icon": {
@@ -59,6 +65,11 @@
       "view/item/context": [
         {
           "command": "extension.loadBookmarks",
+          "when": "view == savedBookmarks",
+          "group": "inline"
+        },
+        {
+          "command": "extension.editFlow",
           "when": "view == savedBookmarks",
           "group": "inline"
         },

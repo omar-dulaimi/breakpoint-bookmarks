@@ -30,7 +30,7 @@ export const loadBookmarks =
       saveLocation,
       workspacePath
     );
-    if (!isDirExist) return;
+    if (!isDirExist) { return; }
 
     const flowsPaths = await readdir(
       saveLocation

@@ -3,7 +3,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 import { BreakpointBookmarksProvider } from "../providers/breakpoint-bookmarks.provider";
 
-export const deleteBookmarksFlow =
+export const editBookmarksFlow =
   (provider: BreakpointBookmarksProvider) => async (item: any) => {
     const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri
       ?.fsPath as string;
@@ -30,41 +30,28 @@ export const deleteBookmarksFlow =
 
     const foundFilePath = flowsPaths.find((flowPath) => flowPath === item.id);
     if (foundFilePath) {
-      const choice = await vscode.window.showWarningMessage(
-        "",
-        {
-          modal: true,
-          detail: `Are you sure you want to delete ${item.label}?`,
-        },
-        "Delete"
-      );
-
-      if (choice === "Delete") {
-        const filePath = saveLocation
-          ? path.join(workspacePath, saveLocation, foundFilePath)
-          : path.join(
-              workspacePath,
-              ".vscode",
-              "breakpoints",
-              `${foundFilePath}`
-            );
-
-        try {
-          await unlink(filePath);
-          vscode.window.showInformationMessage(
-            `Successfully deleted: ${item.label}`
+      const filePath = saveLocation
+        ? path.join(workspacePath, saveLocation, foundFilePath)
+        : path.join(
+            workspacePath,
+            ".vscode",
+            "breakpoints",
+            `${foundFilePath}`
           );
-        } catch (error) {
-          vscode.window.showErrorMessage(
-            `Failed to delete, reason: ${
-              (error as { message: string }).message
-            }`
-          );
-        }
+
+      try {
+        let doc = await vscode.workspace.openTextDocument(filePath);
+        await vscode.window.showTextDocument(doc, { preview: false });
+      } catch (error) {
+        vscode.window.showErrorMessage(
+          `Failed to open, reason: ${
+            (error as { message: string }).message
+          }`
+        );
       }
     } else {
       vscode.window.showErrorMessage(
-        `Failed to delete, flow not found: ${item.label}`
+        `Failed to open, flow not found: ${item.label}`
       );
     }
     provider.refresh();
