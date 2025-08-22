@@ -1,10 +1,10 @@
-import { readdir, unlink } from "fs/promises";
-import * as path from "path";
+import { readdir } from "fs/promises";
 import * as vscode from "vscode";
 import { BreakpointBookmarksProvider } from "../providers/breakpoint-bookmarks.provider";
+import { BookmarkFlowItem, getBookmarkFlowDirectoryPath, getBookmarkFlowFilePath } from "../utils/path-utils";
 
 export const editBookmarksFlow =
-  (provider: BreakpointBookmarksProvider) => async (item: any) => {
+  (provider: BreakpointBookmarksProvider) => async (item: BookmarkFlowItem) => {
     const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri
       ?.fsPath as string;
 
@@ -20,24 +20,21 @@ export const editBookmarksFlow =
       saveLocation,
       workspacePath
     );
-    if (!isDirExist) { return; }
+    if (!isDirExist) {
+      return;
+    }
 
     const flowsPaths = await readdir(
-      saveLocation
-        ? path.join(workspacePath, saveLocation)
-        : path.join(workspacePath, ".vscode", "breakpoints")
+      getBookmarkFlowDirectoryPath(workspacePath, saveLocation)
     );
 
     const foundFilePath = flowsPaths.find((flowPath) => flowPath === item.id);
     if (foundFilePath) {
-      const filePath = saveLocation
-        ? path.join(workspacePath, saveLocation, foundFilePath)
-        : path.join(
-            workspacePath,
-            ".vscode",
-            "breakpoints",
-            `${foundFilePath}`
-          );
+      const filePath = getBookmarkFlowFilePath(
+        workspacePath,
+        saveLocation,
+        foundFilePath
+      );
 
       try {
         let doc = await vscode.workspace.openTextDocument(filePath);

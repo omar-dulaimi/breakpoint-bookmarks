@@ -1,10 +1,10 @@
 import { readdir, unlink } from "fs/promises";
-import * as path from "path";
 import * as vscode from "vscode";
 import { BreakpointBookmarksProvider } from "../providers/breakpoint-bookmarks.provider";
+import { BookmarkFlowItem, getBookmarkFlowDirectoryPath, getBookmarkFlowFilePath } from "../utils/path-utils";
 
 export const deleteBookmarksFlow =
-  (provider: BreakpointBookmarksProvider) => async (item: any) => {
+  (provider: BreakpointBookmarksProvider) => async (item: BookmarkFlowItem) => {
     const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri
       ?.fsPath as string;
 
@@ -20,12 +20,12 @@ export const deleteBookmarksFlow =
       saveLocation,
       workspacePath
     );
-    if (!isDirExist) { return; }
+    if (!isDirExist) {
+      return;
+    }
 
     const flowsPaths = await readdir(
-      saveLocation
-        ? path.join(workspacePath, saveLocation)
-        : path.join(workspacePath, ".vscode", "breakpoints")
+      getBookmarkFlowDirectoryPath(workspacePath, saveLocation)
     );
 
     const foundFilePath = flowsPaths.find((flowPath) => flowPath === item.id);
@@ -40,14 +40,11 @@ export const deleteBookmarksFlow =
       );
 
       if (choice === "Delete") {
-        const filePath = saveLocation
-          ? path.join(workspacePath, saveLocation, foundFilePath)
-          : path.join(
-              workspacePath,
-              ".vscode",
-              "breakpoints",
-              `${foundFilePath}`
-            );
+        const filePath = getBookmarkFlowFilePath(
+          workspacePath,
+          saveLocation,
+          foundFilePath
+        );
 
         try {
           await unlink(filePath);

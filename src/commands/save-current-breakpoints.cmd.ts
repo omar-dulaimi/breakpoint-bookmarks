@@ -2,6 +2,7 @@ import { writeFile } from "fs/promises";
 import * as path from "path";
 import * as vscode from "vscode";
 import { BreakpointBookmarksProvider } from "../providers/breakpoint-bookmarks.provider";
+import { getBookmarkFlowFilePath } from "../utils/path-utils";
 
 export const saveCurrentBreakpoints =
   (provider: BreakpointBookmarksProvider) => async () => {
@@ -20,7 +21,9 @@ export const saveCurrentBreakpoints =
       saveLocation,
       workspacePath
     );
-    if (!isDirExist) { return; }
+    if (!isDirExist) {
+      return;
+    }
 
     const fileName =
       (await vscode.window.showInputBox({
@@ -52,9 +55,11 @@ export const saveCurrentBreakpoints =
       };
     });
 
-    const filePath = saveLocation
-      ? `${path.join(workspacePath, saveLocation, fileName)}.json`
-      : path.join(workspacePath, ".vscode", "breakpoints", `${fileName}.json`);
+    const filePath = getBookmarkFlowFilePath(
+      workspacePath,
+      saveLocation,
+      `${fileName}.json`
+    );
 
     await writeFile(filePath, JSON.stringify(currentBreakpoints), {
       encoding: "utf-8",
