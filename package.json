@@ -65,17 +65,17 @@
       "view/item/context": [
         {
           "command": "extension.loadBookmarks",
-          "when": "view == savedBookmarks",
+          "when": "view == savedBookmarks && viewItem == flow-item",
           "group": "inline"
         },
         {
           "command": "extension.editFlow",
-          "when": "view == savedBookmarks",
+          "when": "view == savedBookmarks && viewItem == flow-item",
           "group": "inline"
         },
         {
           "command": "extension.deleteFlow",
-          "when": "view == savedBookmarks",
+          "when": "view == savedBookmarks && viewItem == flow-item",
           "group": "inline"
         }
       ],
