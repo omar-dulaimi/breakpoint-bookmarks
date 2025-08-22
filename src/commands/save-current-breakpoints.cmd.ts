@@ -31,29 +31,48 @@ export const saveCurrentBreakpoints =
         placeHolder: "test express bug",
       })) ?? "";
 
-    const currentBreakpoints = (
-      vscode.debug.breakpoints as vscode.SourceBreakpoint[]
-    ).map((bp: vscode.SourceBreakpoint) => {
-      let locationPath: string = bp.location.uri.path;
+    const currentBreakpoints = vscode.debug.breakpoints.map((bp) => {
+      if (bp instanceof vscode.SourceBreakpoint) {
+        // Handle source (file/line) breakpoints
+        let locationPath: string = bp.location.uri.fsPath;
 
-      if (useRelativePaths) {
-        locationPath = path.relative(workspacePath, locationPath);
+        if (useRelativePaths) {
+          locationPath = path.relative(workspacePath, locationPath);
+        }
+
+        const range: vscode.Range = bp.location.range.with({
+          start: bp.location.range.start.translate(1),
+          end: bp.location.range.end.translate(1),
+        });
+
+        return {
+          type: 'source',
+          location: locationPath,
+          range,
+          enabled: bp.enabled,
+          condition: bp.condition,
+          hitCondition: bp.hitCondition,
+          logMessage: bp.logMessage,
+        };
+      } else if (bp instanceof vscode.FunctionBreakpoint) {
+        // Handle function breakpoints
+        return {
+          type: 'function',
+          functionName: bp.functionName,
+          enabled: bp.enabled,
+          condition: bp.condition,
+          hitCondition: bp.hitCondition,
+          logMessage: bp.logMessage,
+        };
+      } else {
+        // Handle other breakpoint types (for future extensibility)
+        return {
+          type: 'unknown',
+          enabled: bp.enabled,
+          raw: bp,
+        };
       }
-
-      const range: vscode.Range = bp.location.range.with({
-        start: bp.location.range.start.translate(1),
-        end: bp.location.range.end.translate(1),
-      });
-
-      return {
-        location: locationPath,
-        range,
-        enabled: bp.enabled,
-        condition: bp.condition,
-        hitCondition: bp.hitCondition,
-        logMessage: bp.logMessage,
-      };
-    });
+    }).filter((bp) => bp !== null);
 
     const filePath = getBookmarkFlowFilePath(
       workspacePath,
